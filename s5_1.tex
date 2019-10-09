@@ -1,0 +1,125 @@
+\begin{frame}{Point Estimates}
+    \begin{itemize}
+        \item Your friend claims that Trump has tweeted an average of 10 times per day in 2019.
+        \begin{itemize}
+            \item We consider 10 tweets to be a \textbf{point estimate} for the true average number of daily tweets.
+        \end{itemize}
+        \item The true number is what we would get if we counted all of Trump's tweets in 2019 and divided by the total number of days (as of July 19, the true average was 15.6!). 
+        \begin{itemize}
+            \item This is the \textbf{parameter} of interest.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Point Estimates}
+    \begin{itemize}
+        \item When the parameter is a mean, it is denoted by $\mu$ (mu).
+        \item The sample mean is denoted $\bar{x}$ (x-hat). 
+        \item Unless we collect responses from every case in the population, $\mu$ is unknown.
+        \item We use $\bar{x}$ as our estimate of $\mu$. 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Sampling Distribution}
+    \begin{tabular}{c|c|c}
+        Sample \# & Observations & Mean  \\
+        \hline
+        1 & $x_{1,1}$ $x_{1,2}$ \dots $x_{1,n}$ & $\bar{x}_1$ \\
+        2 & $x_{2,1}$ $x_{2,2}$ \dots $x_{2,n}$ & $\bar{x}_2$ \\
+        3 & $x_{3,1}$ $x_{3,2}$ \dots $x_{3,n}$ & $\bar{x}_3$ \\
+    \end{tabular}
+    \\ Etc.
+    
+    \vspace{12pt}$\bar{x}$ will change each time we get a new sample. Therefore, when $x$ is a random variable, $\bar{x}$ is also a random variable. 
+\end{frame}
+
+\begin{frame}{Error}
+    \begin{itemize}
+        \item The difference between the point estimate and the population parameter is called the \textbf{error} in the estimate. 
+        \item Error consists of two aspects: 
+        \begin{enumerate}
+            \item sampling error 
+            \item bias.
+        \end{enumerate}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Bias}
+    \begin{itemize}
+        \item \textbf{Bias} is a \textit{systematic} tendency to over- or under-estimate the population true value.
+        \item E.g., Suppose we were taking a student poll asking about support for a UCR football team.
+        \item Depending on how we phrased the question, we might end up with very different estimates for the proportion of support.
+        \item We try to minimize bias through thoughtful data collection procedures.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Sampling error}
+    \begin{itemize}
+        \item \textbf{Sampling error} is how much an estimate tends to vary between samples.
+        \item This is also referred to as \textit{sampling uncertainty}.
+        \item E.g., in one sample, the estimate might be 1\% above the true population value. 
+        \item In another sample, the estimate might be 2\% below the truth. 
+        \item Our goal is often to quantify this error. 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Sampling Distribution}
+    We can characterize the distribution of the sample statistic (the \textit{sampling distribution}) as follows:
+    
+    \begin{itemize}
+        \item  The center is $\bar{x}=\mu$.
+        \item The standard deviation of the sampling distribution (the \textbf{standard error}) is $s_{\bar{x}} = \sigma/\sqrt{n}$. 
+        \item Symmetric and bell-shaped.
+    \end{itemize}
+    Note that the sampling distribution is never actually observed!
+\end{frame}
+
+\begin{frame}{Central Limit Theorem}
+    When observations are independent and the sample size is sufficiently large ($n \ge 30$), the sample mean $\bar{x}$ will tend to follow a normal distribution with mean
+    \[
+        \mu_{\bar{x}}
+    \]
+    and standard error
+    \[
+        SE_{\bar{x}} = \frac{\sigma}{\sqrt{n}}
+    \]
+\end{frame}
+
+\begin{frame}{Example}
+    Find the distribution of $\bar{x}$ given $\mu = 15$, $\sigma = 10$ and $n = 100$.
+\end{frame}
+
+\begin{frame}{Example}
+    Estimate how frequently the sample mean $\bar{x}$ should be within $2$ units of the population mean, $\mu = 15$.
+\end{frame}
+
+\begin{frame}{Central Limit Theorem in the Real World}
+    \begin{itemize}
+        \item In a real-world setting, we almost never know the true population standard deviation. 
+        \item Instead, we use the \textit{plug-in principle}:
+    \end{itemize}
+    
+    \[
+        SE_{\bar{x}} \approx \frac{s}{\sqrt{n}}
+    \]
+    
+    \vspace{12pt}This estimate of the standard error tends to be a good approximation of the true standard error.
+\end{frame}
+
+\begin{frame}{More About the CLT}
+    \begin{itemize}
+        \item The sampling distribution is always centered at the true population mean $\mu$.
+        \item So $\bar{x}$ is an \textit{unbiased} estimate of $\mu$.
+        \begin{itemize}
+            \item (As long as the data are independent!)
+        \end{itemize}
+    \end{itemize} 
+\end{frame}
+
+\begin{frame}{More About the CLT}
+    \begin{itemize}
+        \item The variability decreases as the sample size $n$ increases.
+        \item Remember our formula for standard error!
+        \item Estimates based on a larger sample are intuitively more likely to be accurate.
+    \end{itemize}
+\end{frame}
