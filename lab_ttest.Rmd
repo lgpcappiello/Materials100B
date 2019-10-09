@@ -1,0 +1,156 @@
+---
+title: 'Inference for numerical data: t-tests'
+output:
+  html_document:
+    css: /Users/cappiello/Documents/stat100b/oiLabs-base-R-2.0.0/lab.css
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+---
+
+## North Carolina births
+
+In 2004, the state of North Carolina released a large data set containing 
+information on births recorded in this state. This data set is useful to 
+researchers studying the relation between habits and practices of expectant 
+mothers and the birth of their children. We will work with a random sample of 
+observations from this data set.
+
+## Exploratory analysis
+
+Load the `nc` data set into our workspace.
+
+```{r load-data, eval=FALSE}
+download.file("http://www.openintro.org/stat/data/nc.RData", destfile = "nc.RData")
+load("nc.RData")
+```
+
+We have observations on 13 different variables, some categorical and some 
+numerical. The meaning of each variable is as follows.
+
+variable         | description
+---------------- | -----------
+`fage`           | father's age in years.
+`mage`           | mother's age in years.
+`mature`         | maturity status of mother.
+`weeks`          | length of pregnancy in weeks.
+`premie`         | whether the birth was classified as premature (premie) or full-term.
+`visits`         | number of hospital visits during pregnancy.
+`marital`        | whether mother is `married` or `not married` at birth.
+`gained`         | weight gained by mother during pregnancy in pounds.
+`weight`         | weight of the baby at birth in pounds.
+`lowbirthweight` | whether baby was classified as low birthweight (`low`) or not (`not low`).
+`gender`         | gender of the baby, `female` or `male`.
+`habit`          | status of the mother as a `nonsmoker` or a `smoker`.
+`whitemom`       | whether mom is `white` or `not white`.
+
+1.  What are the cases in this data set? How many cases are there in our sample?
+
+As a first step in the analysis, we should consider summaries of the data. This
+can be done using the `summary` command:
+
+```{r summary, eval=FALSE}
+summary(nc)
+```
+
+As you review the variable summaries, consider which variables are categorical 
+and which are numerical. For numerical variables, are there outliers? If you 
+aren't sure or want to take a closer look at the data, make a graph.
+
+Consider the possible relationship between a mother's smoking habit and the 
+weight of her baby. Plotting the data is a useful first step because it helps 
+us quickly visualize trends, identify strong associations, and develop research
+questions.
+
+2.  Make a side-by-side boxplot of `habit` and `weight`. What does the plot 
+highlight about the relationship between these two variables?
+
+The box plots show how the medians of the two distributions compare, but we can
+also compare the means of the distributions using the following function to 
+split the `weight` variable into the `habit` groups, then take the mean of each
+using the `mean` function.
+
+```{r by-means, eval=FALSE}
+by(nc$weight, nc$habit, mean)
+```
+
+There is an observed difference, but is this difference statistically 
+significant? In order to answer this question we will conduct a hypothesis test
+.
+
+## T Tests
+
+3.  Check if the conditions necessary for inference are satisfied. Note that 
+you will need to obtain sample sizes to check the conditions. You can compute 
+the group size using the same `by` command above but replacing `mean` with 
+`length`.
+
+4.  Write the hypotheses for testing if the average weights of babies born to 
+smoking and non-smoking mothers are different.
+
+Next, we introduce a new function, `t.test`, that we will use for conducting
+hypothesis tests and constructing confidence intervals. 
+
+```{r eval=FALSE, tidy=FALSE}
+t.test(nc$weight ~ nc$habit, alternative = "two.sided", mu = 0, 
+       paired = FALSE, var.equal = FALSE, conf.level = 0.95)
+```
+
+The output for this test includes the test statistic `t`, the degrees of
+freedom, `df` and the `p-value`. It also shows the alternative hypothesis,
+a confidence interval, and the means for each group. Did you notice that
+the degrees of freedom look strange? The function `t.test` uses what is 
+called the "Welch modification" to estimate the degrees of freedom for 
+unequal variances. The details of this are outside of the scope of this
+course. 
+
+Let's pause for a moment to really break down the anatomy of this function.
+
+```{r eval=FALSE}
+?t.test
+```
+
+
+There are two ways to approach `t.test`. The first is with `x` and (optionally) 
+`y`. Using only `x`, we can test whether the mean of `x` is equal to some
+null value mu. Using `x` and `y`, we can test whether the difference in means
+for `x` and `y` is equal to mu. We can also use `formula`, which is what
+we've done above. Here, we write `y~x`, which in this case means "y by x".
+That is, `y` is the response variable: `nc$weight` and `x` is the explanatory 
+variable that splits the data into two groups, `smokers` and `nonsmokers`:
+`nc$habit`. The next argument, `alternative` specifies the alternative 
+hypothesis, `mu` specificies the null value, `paired` specifies a paired 
+samples setting, and `var.equal` specifies whether the variances are equal
+for the two groups. Finally, `conf.level` specifies the confidence level. 
+
+5.  Change the `var.equal` argument to `TRUE` to retest this hypothesis under
+the assumption that the variances are equal between the groups for weights of 
+babies born to smoking and non-smoking mothers. Carefully report your
+conclusions. 
+
+* * *
+
+## On your own
+
+-   Calculate a 95% confidence interval for the average length of pregnancies 
+(`weeks`) and interpret it in context. 
+
+-   Calculate a new confidence interval for the same parameter at the 90% 
+confidence level. 
+
+-   Conduct a hypothesis test evaluating whether the average weight gained by 
+younger mothers is different than the average weight gained by mature mothers.
+
+-   Now, a non-inference task: Determine the age cutoff for younger and mature 
+mothers. Use a method of your choice, and explain how your method works.
+
+-   Pick a pair of numerical and categorical variables and come up with a 
+research question evaluating the relationship between these variables. 
+Formulate the question in a way that it can be answered using a hypothesis test
+and/or a confidence interval. Answer your question using the `t.test` 
+function, report the statistical results, and also provide an explanation in 
+plain language.
+
+<div id="license">
+Note: This lab is derivative of an OpenIntro lab, released under a Creative Commons Attribution-ShareAlike 3.0 Unported. The original OpenIntro lab may be found [here](http://htmlpreview.github.io/?https://github.com/andrewpbray/oiLabs-base-R/blob/master/inf_for_numerical_data/inf_for_numerical_data.html). 
+</div>
