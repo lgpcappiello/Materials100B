@@ -1,0 +1,146 @@
+\begin{frame}{Decision Errors}
+    \begin{itemize}
+        \item It is entirely possible that we make the right conclusion based on our data... but the wrong conclusion based on the true (unknown) parameter!
+        \item In a criminal court, sometimes people are wrongly convicted. Other times, guilty people are not convicted at all.
+        \item Unlike in the courts, statistics gives us the tools to quantify how often we make these sorts of errors.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Decision Errors}
+    \begin{itemize}
+        \item There are two competing hypotheses: null and alternative.
+        \item In a hypothesis test, we make some statement about which might be true.
+        \item There are four possible scenarios. We can
+        \begin{enumerate}
+            \item Reject $H_0$ when $H_0$ is false.
+            \item Fail to reject $H_0$ when $H_0$ is true.
+            \item Reject $H_0$ when $H_0$ is true (error).
+            \item Fail to reject $H_0$ when $H_0$ is false (error).
+        \end{enumerate}
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Decision Errors}
+    \begin{center}
+        \begin{tabular}{llcc}
+             & & \multicolumn{2}{c}{\textbf{Test Conclusion}} \\ \cline{3-4} 
+             & & Do not reject $H_0$ & Reject $H_0$ \\ \cline{2-4} 
+            \multirow{2}{*}{\textbf{Truth}} 
+                & $H_0$ true  & Correct Decision & \textbf{Type I Error} \\     & $H_0$ false & \textbf{Type II Error} & Correct Decision \\ \cline{2-4}
+        \end{tabular}
+    \end{center}
+    \begin{itemize}
+        \item A \textbf{Type 1 Error} is rejecting $H_0$ when it is actually true.
+        \item A \textbf{Type 2 Error} is failing to reject $H_0$ when the $H_A$ is actually true.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example}
+    Let's think about criminal courts. The null hypothesis is innocence.
+    
+    \begin{itemize}
+        \item A Type I error is when we decide that a person is guilty, even though they are innocent.
+        \item A Type II error is when we decide that we do not have enough evidence to say that someone is guilty, but they are in fact guilty.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Significance Levels}
+    \begin{itemize}
+        \item The significance level, $\alpha$, indicates how often the data will lead us to incorrectly reject $H_0$
+        \item This is how often we commit a Type I error!
+        \item In fact, $\alpha$ is the probability of committing such an error
+        \[
+            \alpha = P(\text{Type I error})
+        \]
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Significance Levels}
+    If we use a 95\% confidence interval for hypothesis testing and the null is true,
+    \begin{itemize}
+        \item The significance level is $\alpha=0.05$.
+        \item We make an error whenever the point estimate is at least 1.96 standard errors away from the population parameter.
+        \item This happens about 5\% of the time
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Aside: One-Sided Tests}
+    \begin{align*}
+        H_0&: \quad \mu \le \mu_0 \\
+        H_A&: \quad \mu > \mu_0
+    \end{align*}
+    or
+    \begin{align*}
+        H_0&: \quad \mu \ge \mu_0 \\
+        H_A&: \quad \mu < \mu_0
+    \end{align*}
+\end{frame}
+
+\begin{frame}{One-Sided Hypothesis Testing}
+    There is only one major difference in one-sided hypothesis testing.
+    
+    \begin{itemize}
+        \item For the test statistic approach
+        \begin{itemize}
+            \item We use the critical value $z_{\alpha}$ instead of $z_{\alpha/2}$.
+        \end{itemize}
+        \item For the p-value approach
+        \begin{itemize}
+            \item We no longer multiply by two: p-value $= P(Z < -|ts|)$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{One-Sided Hypothesis Testing}
+    In both cases,
+    \begin{itemize}
+        \item We are no longer interested in seeing observations as extreme as $\bar{x}$.
+        \item Now we are actively interested in a particular direction corresponding to the direction of the alternative hypothesis.
+        \item This means that we are interested in a particular Z-score or a single tail area.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{One-Sided Hypothesis Testing}
+    This is useful for several reasons
+    \begin{enumerate}
+        \item We don't have to find $z_{\alpha/2}$ or double the p-value, so the level of evidence required to reject $H_0$ goes down. 
+        \item Sometimes we are really only interested in one direction. 
+    \end{enumerate}
+    On the flip side, we lose the ability to detect any interesting findings in the opposite direction. 
+\end{frame}
+
+\begin{frame}{Example}
+    Suppose some doctors are interested in determining whether stents will help people who have a high risk of stroke. 
+    \begin{itemize}
+        \item The researchers believe the stents would help.
+        \item ...but the data suggests the opposite, that stents are actively harmful.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{One-Sided Hypotheses}
+    \begin{itemize}
+        \item A one-sided test could have checked whether the stents were helpful.
+        \item But a two-sided test allowed the researchers to see that there was harm being done.
+        \item Using one-sided hypotheses runs the risk of overlooking data supporting an opposite conclusion.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{One-Sided Hypothesis Tests}
+    So when should you use a one-sided test? Rarely! 
+    
+    \vspace{12pt}
+    Before using a one-sided test, consider:
+    \begin{itemize}
+        \item What would we conclude if the data happens to go clearly in the opposite direction?
+        \item Is there any value in learning about the data doing in the opposite direction?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Why Can't We Look at the Data First?}
+    We should always set up our hypotheses and analysis plan \textit{\textbf{before taking any data}}.
+    \begin{itemize}
+        \item This is part of doing good science!
+        \item If we pick hypotheses after seeing the data we double our probability of Type I error.
+    \end{itemize}
+\end{frame}
