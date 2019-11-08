@@ -1,0 +1,224 @@
+\begin{frame}{Cautionary Comments on Blocking}
+    \begin{itemize}
+        \item When designating one factor as a \textbf{block}, we assume that the treatment will have the same effect, regardless of block used. 
+        \item When the factors interact, we need a new experimental design setting.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example}
+    The manager of a manufacturing plant suspects that production line output depends on 
+    \begin{enumerate}
+        \item which of two supervisors is in charge.
+        \item which of three shifts it is.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Interactions}
+    If we wanted to use the supervisors as a block, we would need their effects to be the same. 
+    \begin{itemize}
+        \item <1-> There's an \textit{interaction} whenever there is a relationship between the two factors.
+        \item <2-> Example: Supervisor 1 may be a night owl and perform best at night, while Supervisor 2 tends to doze off during night shifts. 
+        \item <3-> Essentially, different levels of \texttt{shift} impact the two supervisors differently.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example}
+    Each supervisor is observed on three randomly selected days for each of the three shifts. 
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{lccc}
+             & \multicolumn{3}{c}{Shift} \\
+            \cline{2-4}
+            Supervisor & Day & Swing & Night \\
+            \hline
+            1 & 487 & 498 & 550 \\
+            2 & 602 & 602 & 637 \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Example}
+    Now suppose we got the following data instead:
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{lccc}
+             & \multicolumn{3}{c}{Shift} \\
+            \cline{2-4}
+            Supervisor & Day & Swing & Night \\
+            \hline
+            1 & 602 & 498 & 450 \\
+            2 & 487 & 602 & 657 \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Factorial Experiments}
+    The previous example is one of a \textbf{factorial experiment}.
+    \begin{itemize}
+        \item There are $2\times3=6$ treatments (factor level combinations).
+        \item This is called a $\boldsymbol{2\times3}$ \textbf{factorial experiment}.
+        \item We can also use factorial experiments to look at more than two factors and their interactions.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Replication}
+    \begin{itemize}
+        \item In a factorial experiment, we want multiple observations per treatment.
+        \item These are called \textbf{replications}.
+        \item E.g., we could take three data points at each factor level combination.
+        \item We will assume that each treatment is replicated $r$ times.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{ANOVA for an $a\times b$ Factorial Experiment}
+    We will use the following notation:
+    \begin{itemize}
+        \item $a$ levels of factor A
+        \item $b$ levels of factor B
+        \item $r$ replicates of each of the $ab$ factor combinations
+        \item A total of $n=abr$ observations
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Sum of Squares for an $a\times b$ Factorial Experiment}
+    We now partition our variance into four parts:
+    \[
+        \text{SS Total}=\text{SSA} + \text{SSB} + \text{SS(AB)} + \text{SSE}
+    \]
+    \begin{itemize}
+        \item SSA measures variation among factor A means.
+        \item SSB measures variation among factor B means.
+        \item SS(AB) measures variation among the different combinations of factor levels.
+        \item SSE measures the variation within each combination of factor levels (experimental error).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Sum of Squares for an $a\times b$ Factorial Experiment}
+    \begin{itemize}
+        \item We refer to SSA and SSB as the \textbf{main effect} sums of squares.
+        \item SS(AB) is referred to as the \textbf{interaction} sum of squares.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Degrees of Freedom for an $a\times b$ Factorial Experiment}
+    Each source of variation has an accompanying degrees of freedom:
+    \begin{itemize}
+        \item $df_{\text{A}} = a-1$
+        \item $df_{\text{B}} = b-1$
+        \item $df_{\text{AB}} = (a-1)(b-1)$
+        \item $df_{\text{error}} = ab(r-1)$
+        \item $df_{\text{total}} = n-1 = abr-1$
+    \end{itemize}
+    The mean square for each source of variation is the sum of squares divided by its degrees of freedom.
+\end{frame}
+
+\begin{frame}{ANOVA: Randomized Block Design}
+    \begin{table}[]
+        \centering\setlength{\extrarowheight}{12pt}
+        \begin{tabular}{lllll}
+            \hline
+            Source  & df & SS & MS & F \\
+            \hline
+            A   & $a-1$ & SSA & MSA $= \frac{SSA}{a-1}$ & $\frac{MSA}{MSE}$ \\
+            B  & $b-1$ & SSB & MSB $= \frac{SSB}{b-1}$ & $\frac{MSG}{MSE}$ \\
+            AB  & $(a-1)(b-1)$ & SS(AB) & MS(AB)$ = \frac{SS(AB)}{(a-1)(b-1)}$ & $\frac{MS(AB)}{MSE}$ \\
+            Error   & $ab(r-1)$ & SSE & $MSE =\frac{SSE}{ab(r-1)}$\\
+            \hline
+            Total   & $abr-1$ & SSTotal \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Tests for a Factorial Experiment}
+    For the main effect of factor A:
+    \begin{align*}
+       H_0&: \quad \text{No differences among the factor A means.} \\
+       H_A&: \quad \text{At least two of the factor A means differ.}
+    \end{align*}
+    Compare: 
+    \[
+        F = \frac{MSA}{MSE} \quad\text{to}\quad F_{\alpha}(df_1 = a-1, df_2=ab(r-1)).
+    \]
+\end{frame}
+
+\begin{frame}{Tests for a Factorial Experiment}
+    For the main effect of Factor B:
+    \begin{align*}
+       H_0&: \quad \text{No differences among the factor B means.} \\
+       H_A&: \quad \text{At least two of the factor B means differ.}
+    \end{align*}
+    \[
+        F = \frac{MSB}{MSE} \quad\text{to}\quad F_{\alpha}(df_1 = b-1, df_2=ab(r-1)).
+    \]
+\end{frame}
+
+\begin{frame}{Tests for a Factorial Experiment}
+    For the interaction of factors A and B:
+    \begin{align*}
+       H_0&: \quad \text{Factors A and B do not interact.} \\
+       H_A&: \quad \text{Factors A and B interact.}
+    \end{align*}
+    Compare
+    \[
+        F = \frac{MS(AB)}{MSE} \quad\text{to}\quad F_{\alpha}(df_1 = (a-1)(b-1), df_2=ab(r-1)).
+    \]
+\end{frame}
+
+\begin{frame}{Example}
+    The two supervisors were monitored on three randomly selected days for each of the three shifts:
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{lccc}
+            & \multicolumn{3}{c}{Shift} \\
+            \cline{2-4}
+            Supervisor & Day & Swing & Night \\
+            \hline
+            \multirow{3}{*}{1} & 571 & 480 & 470 \\
+                            & 610 & 474 & 430 \\
+                            & 625 & 540 & 450 \\
+            \hline
+            \multirow{3}{*}{2} & 480 & 625 & 630 \\
+                            & 516 & 600 & 680 \\
+                            & 465 & 581 & 661 \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Example: Exploratory Analysis}
+    We might want to examine the data for possible interactions. This table shows the means across each set of replicates:
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{lccc}
+            & \multicolumn{3}{c}{Shift} \\
+            \cline{2-4}
+            Supervisor & Day & Swing & Night \\
+            \hline
+            \multirow{3}{*}{1} & 571 & 480 & 470 \\
+                            & 610 & 474 & 430 \\
+                            & 625 & 540 & 450 \\
+            \textbf{Mean} & \textbf{602} & \textbf{498} & \textbf{450} \\ 
+            \hline
+            \multirow{3}{*}{2} & 480 & 625 & 630 \\
+                            & 516 & 600 & 680 \\
+                            & 465 & 581 & 661 \\
+            \textbf{Mean} & \textbf{487} & \textbf{602} & \textbf{657} \\ 
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Example}
+    For two supervisors monitored on three randomly selected days for each of three shifts,
+    \begin{itemize}
+        \item SSA$=19208$ (supervisor)
+        \item SSB$=247$ (shift)
+        \item SS(AB)$=81127$ (interaction)
+        \item SSE$=8640$
+        \item SSTotal$=109222$
+    \end{itemize}
+    Finish the ANOVA table for these data.
+\end{frame}
