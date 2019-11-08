@@ -1,0 +1,126 @@
+\begin{frame}{The Randomized Block Design}
+    \begin{itemize}
+        \item The completely randomized design is best used when experimental units are \textit{homogeneous} (the same/similar).
+        \item It also allows us to examine only one factor (the treatment or groups).
+        \item Any other variability in the response gets lumped in with experimental error.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{The Randomized Block Design}
+    \begin{itemize}
+        \item Sometimes units are not at all homogeneous.
+        \item Typically we aren't interested in this source of variation.
+        \item Instead, we want to control for it.
+        \item E.g., if I'm looking at the impact of growth hormones on rats, I may want to control for differences between males and females.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{The Randomized Block Design}
+    We isolate this additional information using a \textbf{randomized block design}.
+    \begin{itemize}
+        \item We are still interested in comparing $k$ treatment means.
+        \item Now we will also have $b$ blocks.
+        \item Each block should be made up of homogeneous experimental units.
+        \item We will have $n = b\times k$ observations.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{The ANOVA for Randomized Block Designs}
+    \begin{itemize}
+        \item We now have two factors: treatments/groups and blocks.
+        \item Each will affect the response.
+        \item This is sometimes called a two-way ANOVA.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Sum of Squares for Randomized Block Designs}
+    The total sum of squares is now partitioned into three sources of variation:
+    \[
+        \text{SSTotal} = \text{SSG} + \text{SSB} + \text{SSE}
+    \]
+    \begin{itemize}
+        \item SSG: sum of squares, groups
+        \item SSB: sum of squares, blocks
+        \item SSE: sum of squares, error
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Degrees of Freedom for Randomized Block Design}
+    Each source of variation has an accompanying degrees of freedom:
+    \begin{itemize}
+        \item $df_{\text{groups}} = k-1$
+        \item $df_{\text{blocks}} = b-1$
+        \item $df_{\text{error}} = (k-1)(b-1)$
+        \item $df_{\text{total}} = n-1 = b\times k-1$
+    \end{itemize}
+    The mean square for each source of variation is the sum of squares divided by its degrees of freedom.
+\end{frame}
+
+\begin{frame}{ANOVA: Randomized Block Design}
+    \begin{table}[]
+        \centering\setlength{\extrarowheight}{10pt}
+        \begin{tabular}{lllll}
+            \hline
+            Source  & df & SS & MS & F \\
+            \hline
+            Group   & $k-1$ & $SSG$ & $MSG = \frac{SSG}{k-1}$ & MSG/MSE \\
+            Blocks  & $b-1$ & $SSB$ & $MSG = \frac{SSG}{b-1}$ & MSG/MSE \\
+            Error   & $(k-1)(b-1)$ & $SSE$ & $MSE =\frac{SSE}{(k-1)(b-1)}$\\
+            \hline
+            Total   & $n-1 = bk-1$ & $SST$ \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Example}
+    \begin{itemize}
+        \item The cost of a cellphone minute varies drastically depending on the number of minutes per month used by the customer.
+        \item A consumer watchdog group decided to compare the average costs for four cellular phone companies using three different usage levels as blocks.
+        \item The monthly costs (in dollars) were computed for peak-time callers at low (20 minutes per month), middle (150 minutes per month), and high (1000 minutes per month).
+        \item We want to construct the analysis of variance table for this experiment.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example}
+    The data is shown below.
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{l ccccc}
+             & \multicolumn{4}{c}{Company} & \\
+             \cline{2-5}
+            Usage Level & A & B & C & D & Total \\ 
+            \hline
+            Low & 27 & 24 & 31 & 23 & 105 \\
+            Middle & 68 & 76 & 65 & 67 & 276 \\
+            High & 308 & 326 & 213 & 300 & 1246 \\
+            \hline
+            Total & 403 & 426 & 408 & 390 & 1627 \\
+        \end{tabular}
+    \end{table}
+    Using this data, we can use a computer to find SSTotal$ = 189,798.9167$, SSGroup$= 222.25$, and SSBlock$= 189,335.1667$. 
+\end{frame}
+
+\begin{frame}{Hypothesis Tests}
+    Now we have two $F$ values to worry about. These correspond to tests regarding treatment means
+    \begin{align*}
+       H_0&: \quad \text{No difference among } k \text{ group means.} \\
+       H_A&: \quad \text{At least one pair of group means is not equal.}
+    \end{align*}
+    and block means
+    \begin{align*}
+        H_0&: \quad \text{No difference among } b \text{ block means.} \\
+        H_A&: \quad \text{At least one pair of block means is not equal.}
+    \end{align*}
+\end{frame}
+
+\begin{frame}{Two-Way ANOVA}
+    The intuition behind partitioning variance and the approach to the F-tests are exactly the same as with the one-way ANOVA that we learned last week!
+\end{frame}
+
+\begin{frame}{Example}
+    \begin{enumerate}
+        \item Write the hypotheses for the ANOVA from the previous example.
+        \item What can we conclude?
+    \end{enumerate}
+\end{frame}
