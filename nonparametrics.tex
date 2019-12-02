@@ -1,0 +1,226 @@
+%Week 10, day 1: additional slides
+\begin{frame}{Nonparametric Methods}
+    \begin{itemize}
+        \item The methods discussed thus far are all \textbf{parametric methods}.
+        \begin{itemize}
+            \item Parametric methods make a lot of assumptions about model parameters, such as distributional assumptions.
+        \end{itemize}
+        \item We will introduce some \textbf{nonparametric methods}.
+        \begin{itemize}
+            \item These require less restrictive assumptions.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{When Are Nonparametric Methods Useful?}
+    \begin{itemize}
+        \item The data are \textit{nominal} or \textit{ordinal} in nature (ordered or unordered categorical). 
+        \item The parametric assumptions for a test are not satisfied.
+        \begin{itemize}
+            \item When we used t-tests, we needed to assume normality. 
+            \item When the populations are not normally distributed, we should use a nonparametric test instead.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{When Are Nonparametric Methods Useful?}
+    \begin{itemize}
+        \item Even if a parametric method is appropriate, nonparametric methods tend to give similar results.
+        \begin{itemize}
+            \item We don't always use them because they can be more complex to interpret.
+            \item Nonparametric methods may also have slightly lower power.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example: The Sign Test}
+    \begin{itemize}
+        \item A company is producing a new orange juice. 
+        \item They want to know whether people prefer their orange juice or a competitor's orange juice.
+        \item 12 individuals were given unmarked samples of orange juice in a random order.
+        \item Each individual identified with orange juice they preferred. 
+        \item We want to know whether preferences for the two juices are equal.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example: Hypotheses}
+    The hypotheses are
+    \begin{align*}
+        H_0\text{: }& p=0.5 \quad \text{No difference in preference.} \\
+        H_A\text{: }& p\ne0.5 \quad \text{One product is preferred more than the other.} 
+    \end{align*}
+\end{frame}
+
+\begin{frame}{Example: The Data}
+    \centering
+    \begin{tabular}{rl}
+        \textbf{Individual} & \textbf{Brand Preference} \\
+        1 & Tropical Orange \\ 
+        2 & Tropical Orange \\ 
+        3 & Citrus Valley \\ 
+        4 & Tropical Orange \\ 
+        5 & Tropical Orange \\ 
+        6 & Tropical Orange \\ 
+        7 & Tropical Orange \\ 
+        8 & Tropical Orange \\ 
+        9 & Citrus Valley \\ 
+        10 & Tropical Orange \\ 
+        11 & Tropical Orange \\ 
+        12 & Tropical Orange \\ 
+    \end{tabular}
+\end{frame}
+
+\begin{frame}{Sign Test P-Values}
+    Under $H_0$, the number of $+$ signs is distributed Binomial(n, p).
+
+    \vspace{12pt}The p-value for the sign test with hypotheses
+    \begin{align*}
+        H_0\text{: }& p=0.5 \quad \text{No difference in preference.} \\
+        H_A\text{: }& p\ne0.5 \quad \text{One product is preferred more than the other.} 
+    \end{align*}
+    is 
+    \[
+        2 \times P(\text{number of + signs } \le \text{ observed number of + signs})
+    \]
+\end{frame}
+
+\begin{frame}{Example: Orange Juice}
+    Find the p-value for the orange juice example. What are the conclusions for this test?
+\end{frame}
+
+\begin{frame}{The Sign Test}
+    For a Binomial($n=12$, $p=0.5$) distribution,
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{cc | cc}
+            \hline
+            Number of + & Probability & Number of + & Probability \\
+            \hline
+            0 & 0.0002 & 7 & 0.1934 \\
+            1 & 0.0029 & 8 & 0.1208 \\
+            2 & 0.0161 & 9 & 0.0537 \\
+            3 & 0.0537 & 10 & 0.0161 \\
+            4 & 0.1208 & 11 & 0.0029 \\
+            5 & 0.1934 & 12 & 0.0002 \\ 
+            6 & 0.2256 & & \\
+            \hline 
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{The Sign Test}
+    \begin{itemize}
+        \item The \textbf{sign test} is the nonparametric version of the \textit{one-sample t-test}.
+        \item The previous example showed it used for proportions.
+        \item We can also use this test for measures of center.
+        \begin{itemize}
+            \item For nonparametric tests, we often use the median as a measure for center. 
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Hypothesis Tests About a Median}
+    \begin{align*}
+        H_0\text{: Median}&=M_0 \\
+        H_A\text{: Median}&\ne M_0
+    \end{align*}
+    \begin{itemize}
+        \item Recall: the median splits the data in half so that 50\% of the values fall above and 50\% fall below.
+        \item We apply the sign test by using a + sign when the value is above the hypothesized median and a - sign when it is below. 
+        \item The computations are otherwise the same.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Large Sample Approach}
+    \begin{itemize}
+        \item Recall: we can use a normal distribution to approximate the binomial distribution.
+        \item For large values of $n$, a Binomial(n, p) is well-approximated by
+        \[
+            N(\mu = np, \sigma=\sqrt{np(1-p)})
+        \]
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example}
+    We want to know about the median home price in St. Louis, MO.
+    \begin{align*}
+        H_0\text{: Median}&=\$75,000 \\
+        H_A\text{: Median}&\ne \$75,000
+    \end{align*}
+    \begin{itemize}
+        \item There is a sample of $n=62$ sales.
+        \item 37 had prices above $\$75,000$.
+        \item 23 had prices below $\$75,000$.
+        \item 2 had prices exactly equal to $\$75,000$.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Wilcoxon Signed-Rank Test}
+    The \textbf{Wilcoxon signed-rank test} is the nonparametric alternative to the paired t-test.
+    \begin{itemize}
+        \item Requires numeric data.
+        \item The t-test requires that the differences are normally distributed.
+        \item The Wilcoxon signed-rank test does not have these same requirements. 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example}
+    A manufacturing firm is examining task completion times for two production methods.
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{cccc}
+            \hline
+            Worker & Method 1 & Method 2 & Difference \\ 
+            \hline
+            1 & 10.2 & 9.5 & 0.7 \\
+            2 & 9.6 & 9.8 & -0.2 \\
+            3 & 9.2 & 8.8 & 0.4 \\
+            4 & 10.6 & 10.1 & 0.5 \\
+            5 & 9.9 & 10.3 & -0.4 \\
+            6 & 10.2 & 9.3 & 0.9 \\
+            7 & 10.6 & 10.5 & 0.1 \\
+            8 & 10.0 & 10.0 & 0 \\
+            9 & 11.2 & 10.6 & 0.6 \\
+            10 & 10.7 & 10.2 & 0.5 \\
+            11 & 10.6 & 9.8 & 0.8 \\ 
+            \hline 
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Wilcoxon Signed-Rank Test}
+    \begin{enumerate}
+        \item Take the difference.
+        \item Take the absolute value of the difference.
+        \item Rank the absolute values of the differences.
+        \item Reapply the signs from the differences to these ranks.
+        \item Sum the signed ranks.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Example}
+    Find the sum of the signed ranks for the manufacturing firm data. 
+\end{frame}
+
+\begin{frame}{Wilcoxon Signed-Rank Test}
+    Let $T$ denote the sum of the signed-rank values.
+    
+    \vspace{12pt}For data with at least 10 pairs, $T$ is well-approximated by
+    \[
+        N\left(\mu = 0, \sigma = \sqrt{\frac{n(n+1)(2n+1)}{6}}\right)
+    \]
+    where $n$ is the number of pairs with a nonzero difference. 
+\end{frame}
+
+\begin{frame}{Example}
+    Find the normal distribution that approximates $T$ for the manufacturer data. 
+\end{frame}
+
+\begin{frame}{Wilcoxon Signed-Rank Test}
+    Then the test statistic $z$ is
+    \[
+        z = \frac{T - \mu}{\sigma}
+    \]
+    
+    \vspace{12pt}Find the test statistic for the manufacturer data. 
+\end{frame}
