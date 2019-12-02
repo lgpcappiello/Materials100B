@@ -1,0 +1,225 @@
+\begin{frame}{Multiple Regression}
+    \begin{itemize}
+        \item An outcome may be simultaneously influenced by many variables.
+        \item Think back to our randomized block and factorial designs.
+        \item Multiple regression extends this idea into the regression framework.
+        \item We will extend the simple linear regression to include many predictor variables.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Consider}
+    We will work with a data set that contains patient data for a clinical trial with 1000 participants. 
+    \begin{itemize}
+        \item Each patient entered the study with high LDL cholesterol.
+        \item Patients were randomly assigned to either a medication to manage their cholesterol or to a placebo. 
+        \item We can always examine treatment and change in LDL cholesterol.
+        \item But what about other variables? 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{The Data}
+    \begin{table}[h]
+        \centering\small
+        \begin{tabular}{lccccccccc}
+            \hline
+             & ldl.post & trt & sex & age & weight & sys.bp & dia.bp & income & ldl.pre \\
+            \hline
+            1 & 176   & 0 &  M & 47  &  186  &  119  &   64   & low & 178 \\
+            2 & 191  &  0 &  M & 37  &  185  &  121  &   72   & med & 191 \\
+            3 & 155  &  1 &  M & 48  &  208   & 106  &   71  & med & 203 \\
+            4 & 123  &  1 &  F & 46  &  159   & 106  &   57  & med & 168 \\
+            5 & 120  &  1 &  M & 37  &  117  &  100  &   74  & low & 168 \\
+            6 & 134 &   1  & F & 38  &  228 &   128  &   71  & low & 190 \\
+            \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots &   \vdots & \vdots \\
+            \hline
+        \end{tabular}
+    \end{table}
+    How might weight impact the medication's effectiveness? What about blood pressure?
+\end{frame}
+
+\begin{frame}{Indicator and Categorical Variables as Predictors}
+    We start by fitting a linear regression model using \texttt{trt} to predict \texttt{ldl.post - ldl.pre}.
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{lcccc}
+            \hline
+                        & Estimate & Std. Error & t value & Pr($>|t|$) \\
+            \hline
+            (Intercept) &  0.1588  & 0.1576  &  1.007  &  0.314   \\
+            trt         & -48.1471 & 0.2196 & -219.216 &  $<$2e-16 \\
+            \hline
+        \end{tabular}
+    \end{table}
+    Write the regression line. Then, interpret the slope and intercept.
+\end{frame}
+
+\begin{frame}{Indicator and Categorical Variables as Predictors}
+    We can also fit models using categorical variables with more than 2 levels. 
+    \begin{itemize}
+        \item The \texttt{income} variable has 3 levels: high, medium, and low.
+        \item Suppose we want to know whether socioeconomic status is relevant to treatment outcomes.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Indicator and Categorical Variables as Predictors}
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{lcccc}
+            \hline
+                        & Estimate & Std. Error & t value & Pr($>|t|$) \\
+            \hline
+            (Intercept) & -23.6000   &  1.8949& -12.454  & $<$2e-16 \\
+            incomelow   &  -0.9113   &  2.1937 & -0.415   & 0.678  \\ 
+            incomemed   &  -1.7000   &  2.2986  &-0.740&    0.460 \\
+            \hline
+        \end{tabular}
+    \end{table}
+    \begin{itemize}
+        \item Each row represents the relative difference for each level.
+        \item Notice we are missing income:high. This is the \textbf{reference level} that the other variables are measured against.
+        \item I let \texttt{R} choose the reference level, but we could pick any one of the income levels to act as the "default".
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example}
+    None of the levels of income appear to be good predictors for our treatment outcomes, but let's think about how to use the regression equation.
+\end{frame}
+
+\begin{frame}{Predictors with Several Categories}
+    \begin{itemize}
+        \item When fitting a regression model with a categorical variable that has $k$ levels, standard software will provide a coefficient for $k − 1$ of them.
+        \item For the level that does not receive a coefficient, this is the reference level. 
+        \item The coefficients listed for the other levels are all considered relative to this reference level.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Including and Assessing Many Variables in a Model}
+    \begin{itemize}
+        \item The world is complex! More information is typically better information.
+        \item If we have the ability to collect and use many variables, we should use them!
+        \item This is the idea behind \textbf{multiple linear regression}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Including and Assessing Many Variables in a Model}
+    We want to construct a model for our cholesterol data using all of the variables simultaneously:
+    \begin{align*}
+        \hat{\texttt{ldl.post}} = \beta_0 &+ \beta_1 \times \texttt{trt} + \beta_2 \times \texttt{sex} + \beta_3 \times \texttt{age} \\
+        &+ \beta_4 \times \texttt{weight} + \beta_5 \times \texttt{sys.bp} + \beta_6 \times \texttt{dia.bp} \\
+        &+ \beta_7 \times \texttt{income}_{med} + \beta_8 \times \texttt{income}_{low} + \beta_9 \times \texttt{ldl.pre} 
+    \end{align*}
+\end{frame}
+
+\begin{frame}{Estimating Parameters}
+    We estimate $\beta_0, \beta_1, \dots, \beta_9$ the same way we did for our linear regression with only two parameters, by minimzing the sum of squared residuals
+    \[
+        SSE = \sum_{i=1}^n (y_i - \hat{y}_i)^2
+    \]
+    
+    \vspace{18pt}But... this time we'll definitely use a computer.
+\end{frame}
+
+\begin{frame}{Example}
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{lcccc}
+            \hline
+                        & Estimate & Std. Error & t value & Pr($>|t|$) \\
+            \hline
+            (Intercept) & 26.50  & 1.773 &  14.95 & $<$ 2e-16 \\
+            trt     &    -48.20  & 0.159 &-303.71 & $<$ 2e-16 \\
+            sexM    &     -0.63  & 0.159 &  -3.99 & 7.23e-05 \\
+            age     &      0.02  & 0.012  &  1.29 &  0.197     \\
+            weight  &     -0.01  & 0.003 &  -2.45 &  0.015   \\
+            sys.bp  &     -0.15  & 0.006 & -27.44 & $<$ 2e-16 \\
+            dia.bp  &     -0.11  & 0.010 & -10.84 & $<$ 2e-16 \\
+            incomelow  &  -0.23  & 0.227 &  -1.01 &  0.314     \\
+            incomemed  &  -0.05 &  0.238 &  -0.19  & 0.848     \\
+            ldl.pre    &   0.99  & 0.008 & 126.16 & $<$ 2e-16 \\
+            \hline
+        \end{tabular}
+    \end{table}
+    Write out the regression model. 
+\end{frame}
+
+\begin{frame}{Example}
+    \begin{itemize}
+        \item Interpret the coefficients corresponding to \texttt{sexM} and \texttt{age}. 
+        \item Calculate the residual for the first patient. 
+    \end{itemize}
+    \begin{table}[h]
+        \centering\small
+        \begin{tabular}{lccccccccc}
+            \hline
+             & ldl.post & trt & sex & age & weight & sys.bp & dia.bp & income & ldl.pre \\
+            1 & 176   & 0 &  M & 47  &  186  &  119  &   64   & low & 178 \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Example}
+    The estimated linear regression line for $\texttt{LDL.post} = \beta_0 + \beta_1 \texttt{trt}$ is 
+    \[
+        \hat{\texttt{LDL.post}}=175.0309 -49.0756\times\texttt{trt}.
+    \]
+    with $SE(b_1) = 0.6657$. 
+    
+    \vspace{12pt}Why is this different from the estimate and standard error for \texttt{trt} in the multiple regression model?
+\end{frame}
+
+\begin{frame}{Correlation Between Predictor Variables}
+    \begin{itemize}
+        \item We say the two predictor variables are \textbf{collinear} when they are correlated.
+        \item This complicates model estimation.
+        \item We can't always prevent collinearity, but we do want to control it.
+        \item Ex: height and arm span give us essentially the same information. We wouldn't want to use both in a model.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Goodness-of-Fit}
+    Recall that we used $R^2$ to determine the amount of variability explained by the model:
+    \[
+        R^2 = 1 - \frac{\text{variability in residuals}}{\text{total variability}} = 1- \frac{SS_{residuals}}{SS_{total}}
+    \]
+    We can continue to use this in multiple regression.
+\end{frame}
+
+\begin{frame}{Goodness-of-Fit}
+    \begin{itemize}
+        \item $R^2$ will always increase when we include more variables in the model.
+        \item This is true even if the variables aren't very useful!
+        \item We want a measure that will help us balance model efficacy with model size.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Adjusted $R^2$}
+    \textbf{Adjusted} $\boldsymbol{R^2}$ is computed as
+    \[
+        R^2_{adj} = 1 - \frac{SS_{resid}/(n-k-1)}{SS_{total}/(n-1)}
+    \]
+    where $n$ is the number of observations and $k$ is the number of predictor variables in the model.
+    
+    \vspace{12pt} Note that $k$ includes the $p-1$ predictor variables for categorical variables with $p$ levels.
+\end{frame}
+
+\begin{frame}{Adjusted $R^2$}
+    Notice that
+    \begin{align*}
+        R^2_{adj} = 1 - \frac{SS_{resid}}{SS_{total}}\times\frac{(n-1)}{(n-k-1)}
+    \end{align*}
+    and
+    \[
+        R^2 = 1 - \frac{SS_{resid}}{SS_{total}}
+    \]
+    Since $k \ge 1$, $R^2_{adj} < R^2$.
+\end{frame}
+
+\begin{frame}{Adjusted $R^2$}
+    \begin{itemize}
+        \item The idea here lies with degrees of freedom.
+        \item We adjust $R^2$ based on model and error df.
+        \item This balances efficacy and model size (what we wanted).
+        \item This will also help us compare models.
+    \end{itemize}
+\end{frame}
