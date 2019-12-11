@@ -150,7 +150,7 @@
         \item Then $\sigma$ is well-approximated by 
     \end{itemize}
     \[
-        SE(\hat{y}) = \sqrt{\text{MSE}\left(\frac{1}{n} + \frac{(x_0-\bar{x})^2}{s_x}\right)}
+        SE(\hat{y}) = \sqrt{\text{MSE}\left(\frac{1}{n} + \frac{(x_0-\bar{x})^2}{SS_x}\right)}
     \]
 \end{frame}
 
@@ -170,7 +170,7 @@
     or
     \[
         \hat{y} \pm t_{\alpha/2}(n-2)\times 
-        \sqrt{\text{MSE}\left(\frac{1}{n} + \frac{(x_0-\bar{x})^2}{s_x}\right)}
+        \sqrt{\text{MSE}\left(\frac{1}{n} + \frac{(x_0-\bar{x})^2}{SS_x}\right)}
     \]
 \end{frame}
 
@@ -195,7 +195,7 @@
 \begin{frame}{Prediction Intervals for $y$}
     The standard error of $(y-\hat{y})$ is
     \[
-        SE(y-\hat{y}) = \sqrt{\text{MSE}\left(1 + \frac{1}{n} + \frac{(x_0-\bar{x})^2}{s_x}\right)}
+        SE(y-\hat{y}) = \sqrt{\text{MSE}\left(1 + \frac{1}{n} + \frac{(x_0-\bar{x})^2}{SS_x}\right)}
     \]
 \end{frame}
 
@@ -207,7 +207,7 @@
     or
     \[
         \hat{y} \pm t_{\alpha/2}(n-2)\times 
-        \sqrt{\text{MSE}\left(1 + \frac{1}{n} + \frac{(x_0-\bar{x})^2}{s_x}\right)}
+        \sqrt{\text{MSE}\left(1 + \frac{1}{n} + \frac{(x_0-\bar{x})^2}{SS_x}\right)}
     \]
 \end{frame}
 
