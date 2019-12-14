@@ -1,0 +1,266 @@
+---
+title: 'Introducing Simulations'
+output:
+  html_document:
+    css: /Users/laurencappiello/Documents/stat100b/oiLabs-base-R-2.0.0/lab.css
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+---
+
+## Simulations
+
+Simulation is a way to model random events. This involves simulating (generating) 
+data based on a statistical model. We can use this fake data to do things like 
+examine how methods work or calculate things that are difficult to do 
+mathematically. 
+
+In a previous lab, "Foundations for Statistical Inference - Confidence Intervals", 
+you got your first introduction to simulations. In this lab, you saw a way to generate
+many samples in `R` and calculate confidence intervals for each. This kind of 
+approach allows us to confirm that, with repeated sampling, a 95\% confidence
+interval will contain the true mean 95\% of the time!
+
+## Conducting a Simulation
+
+For example, say we want to simulate the probability of getting "heads" exactly 
+4 times in 10 flips of a fair coin. 
+
+One way to generate a flip of the coin is to create a vector in `R` with all of the 
+possible outcomes and then randomly select one of those outcomes. The `sample` function 
+takes a vector of elements (in this case `heads` or `tails`) and chooses a random sample 
+of `size` elements. 
+
+```{r eval=FALSE}
+coin <- c("heads","tails")
+sample(coin, size = 1, replace = TRUE)
+```
+
+We can do this with or without replacement. Since we are interested in the number of
+heads in 10 flips of a coin, we need to do this with replacement. Recall that sampling
+with replacement means that if I get some outcome (e.g., "tails") I can get that outcome
+again on a subsequent trial (coin flip). 
+
+```{r eval=FALSE}
+sample(coin, size = 10, replace = TRUE)
+```
+
+Another approach that will work for any simulation is as follows. In order to 
+conduct a simulation, we need to (1) describe all possible outcomes,
+(2) connect these outcomes to a random variable(s), (3) choose a source of 
+random numbers, (4) generate a number and note the outcome, (5) repeat step 4
+until the generated numbers show a stable pattern, (6) analyze the simulated
+outcomes. 
+
+In the coin flip example, (1) there are two possible outcomes: heads or tails.
+(2) We are interested in heads, so we will let a 1 represent "heads" and a 0 represent
+"tails". (3) For a source of random numbers, we will use `R` to generate draws
+from the appropriate distribution. Since there are exactly two outcomes and "heads" 
+(or 1) occurs with 50\% probability, we know that we are working with a bernoulli
+distribution. For repeated flips of the coin, this is a binomial distribution. 
+Finally, (4) we can generate a single flip of the coin using
+
+```{r eval=FALSE}
+rbinom(n=1, size=1, prob=0.5)
+```
+
+where `n` is the number of observations (or experimental repetitions) we want to generate 
+and `size` is the number of trials in our binomial experiment (see `?rbinom` for more 
+information). To generate the number of 1s (heads) in 10 flips of the coin (1 experimental 
+repetition), we write
+
+```{r eval=FALSE}
+rbinom(n=1, size=10, prob=0.5)
+```
+
+Note: if we wanted to generate 10 flips and count the number of 1s ourselves, we could
+write
+
+```{r eval=FALSE}
+rbinom(n=10, size=1, prob=0.5)
+```
+
+If in doubt, test with a small number like 5 or 10!
+
+1. Generate the number of heads in 10 flips of the coin for 1000 experimental repetitions. 
+Store these values as `nheads`.
+
+Our goal is to simulate the probability of getting "heads" exactly 4 times in 10 flips of 
+a fair coin. In (1), you asked `R` to flip a coin 10 times and record the number of heads...
+and then to repeat this process 1000 times. In order to count the number of times there
+were exactly 4 heads, we need to figure out how often `nheads` = 4. 
+
+Internally, `R` stores `TRUE` and `FALSE` as 1 and 0, respectively. This means that we can
+tally up the number of times that something happens by asking *if* it happens and then 
+summing over all of the `TRUE`/`FALSE` values.
+
+```{r eval=FALSE}
+sum(nheads == 4)
+```
+
+2. Use the number of 4s in your simulated data to estimate the probability that 
+exactly 4 in 10 coin flips result in `heads`.
+
+## Calculating Power
+
+One very useful thing that we can do with simulations is calculate power in settings 
+where this would otherwise be very difficult! In class, we talked about calculating
+power and sample size for t-tests of two means when the group sizes are equal. What 
+happens when the group sizes differ? 
+
+Suppose we want to test a promising new medical treatment, but we only get 15 people 
+in our treatment group. The control group consists of people taking some existing drug, 
+a population which is readily available to us. Since this population is readily available, 
+we get a sample size of 150 in our control group. We would like to be able to detect a 
+difference of at least 2 units (minimum effect size). For a 0.05 level of confidence, 
+what is the power of this study?
+
+Let's break this down into parts. First, let's simulate data for the control group. One 
+of our t-test assumptions is that the data come from normally distributed populations. 
+We use the function `rnorm` to generate data from a normal distributon. For the standard 
+deviation, we will need to use some historical data. Since the control is based on the 
+current treatment standard, we could get this data from previous research. Let's say 
+this value is 5. 
+
+```{r eval=FALSE}
+control <- rnorm(n = 150, mean = 0, sd = 5)
+```
+
+We set the mean to zero for convenience - we're not interested in the exact mean in 
+this setting. Instead, we are interested in the difference between two means. We want 
+to be able to detect a difference of at least two. Therefore the mean for the treatment 
+group data that we generate needs to be two away from the control group mean. (Recall 
+that power calculations operate under the idea of an "alternative distribution" or the 
+normal distribution centered at the minimum effect size.) Without prior research, we use
+the same standard deviation estimate that we used for the control group. 
+
+```{r eval=FALSE}
+treatment <- rnorm(n = 15, mean = 2, sd = 5)
+```
+
+We know that the true difference in means is 2, but will a t-test reflect that? This is
+the essence of the power question. Let's find out.
+
+```{r eval=FALSE}
+t.test(treatment, control)
+```
+
+3. Run the t-test. Were you able to find a significant difference between the treatment 
+and control groups?
+
+Now we need to repeat this many times and see how often we are able to accurately reject
+the null hypothesis. This will allow us to quickly calculate the power of the test. We will
+do this using a loop. In each iteration of the loop, we (1) randomly generate data for the
+control and treatment groups, (2) run the t-test and save the results, (3) compare the 
+saved p-value to an $\alpha=0.05$ level of significance. Finally, we add `reject` to 
+`numrejects`. This value starts at 0 and counts the number of times that we reject the 
+null hypothesis. (If p-value < alpha, we reject and `reject` will be `TRUE`, stored as
+the value 1 in `R`.)
+
+```{r eval=FALSE}
+alpha = 0.05
+numrejects <- 0
+
+for(i in 1:1000){
+  control <- rnorm(n = 150, mean = 0, sd = 5)
+  treatment <- rnorm(n = 15, mean = 2, sd = 5)
+  ttest <- t.test(treatment, control)
+  reject <- ttest$p.value < alpha
+  numrejects <- numrejects + reject
+}
+```
+
+Then the power will be the proportion of times that we reject out of the total number
+of repetitions done by the loop.
+
+4. Use the value of `numrejects` to find the power of this test. 
+
+## Chocolate Frogs
+
+In the Harry Potter books and films, chocolate frogs come with collectible cards that 
+feature one of a number of famous faces in the wizarding world (if you're not familiar
+with Harry Potter, these are like any other collectable item!). Suppose we want to 
+determine the average number of chocolate frogs we would need to buy in order to 
+collect all of the cards we want. The following code downloads a custom function to 
+run this simulation. 
+
+```{r eval=FALSE}
+source('https://lgpcappiello.github.io/teaching/stat100b/harrypotter.R')
+```
+
+This function runs `n` iterations (repetitions). It simulates buying chocolate covered 
+frogs with card possibilities `x` with associated probabilities `p`. For each iteration, 
+cards are randomly drawn based on the provided probabilities until all cards have 
+successfully been collected. This is repeated `n` times. The function returns the mean 
+and standard deviation of the number of chocolate frogs purchased before all cards were 
+collected. To examine the function in more detail, type `MC_geom` in the `R` console 
+and press Enter to view the entire function. 
+
+The next lines of code tell `R` which cards we are interested in getting and lists a
+probability for each. Notice that we give each card a probability and have `R` calculate 
+the probability of "other" by taking 1 - sum(probabilities of cards of interest). 
+
+```{r eval=FALSE}
+cards<-c("Dumbledore","McGonagall","Grindewald","Lestrange","Snape","Scamander",
+         "Moody","Flitwick","Sprout","Flamel","Others")
+
+length(cards)
+p1<-.005 # probability of Dumbledore card
+p2<-.01  # probability of McGonagall card
+p3<-.04  # etc...
+p4<-.05
+p5<-.025
+p6<-.02
+p7<-.03
+p8<-.025
+p9<-.02
+p10<-.02
+#Create a vector with all probabilities and probability of others
+probs.pre<-c(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10)
+probs<-c(probs.pre,1-sum(probs.pre))
+```
+
+Now we are ready to run the simulation. We will ask `R` to run 10,000 iterations. 
+This may not run quite as quickly as you are used to - this is normal! 
+
+```{r eval=FALSE}
+MC_geom(10000,cards,probs)
+```
+
+5. On average, how many chocolate frogs would you need to buy in order to collect 
+all of the cards of interest?
+
+* * *
+
+## On your own
+
+-   Use simulations to estimate the probability of rolling three 1s in a row on a fair, 
+six-sided die. Hint: use the binomial distribution.
+
+-   Suppose some scientists are working on a dietary supplement for pet raccoons. They 
+get 75 raccoons in the treatment group and 100 in the control group. They would like to 
+be able to detect a difference of at least 1 unit. Suppose existing research on raccoon 
+dietary supplements suggests that a reasonable standard deviation estimate is 2.5. For 
+a 0.05 level of confidence, what is the power of this study? 
+
+-   Rework your code from the previous problem to calculate and store all of the values 
+of the difference in sample means between treatment and control. Create a histogram of 
+the 1000 saved differences. Describe the distribution. Hint: the code for the simulations 
+done in the Confidence Intervals lab may be helpful. 
+
+-   Suppose we are buying chocolate frogs and want to collect cards of Luna, McGonagall,
+Neville, and Harry, with probabilities 0.024, 0.01, 0.026, and 0.02, respectively. Run 
+a simulation to determine how many chocolate frogs you would need to buy, on average 
+in order to collect each of these cards. 
+
+-   Use the output from the previous problem to calculate a 95\% confidence interval 
+for the average number of chocolate frogs bought in the previous problem. Hint: if you 
+ran `n=10000` iterations, you are working with a sample of 10,000 means. 
+
+<div id="license">
+This lab was written by Lauren Cappiello for Statistics 100B at the University 
+of California, Riverside. Thanks to Isaac Quintanilla for the original chocolate frogs problem. "Foundations for Statistical Inference - Confidence Intervals" refers to an 
+OpenIntro lab written by Andrew Bray and Mine &Ccedil;etinkaya-Rundel. The css file 
+for the lab template is also from OpenIntro, released under a Creative Commons 
+Attribution-Share Alike 3.0 Unported. 
+</div>

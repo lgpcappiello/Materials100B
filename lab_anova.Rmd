@@ -2,7 +2,7 @@
 title: 'Analysis of Variance'
 output:
   html_document:
-    css: /Users/cappiello/Documents/stat100b/oiLabs-base-R-2.0.0/lab.css
+    css: /Users/laurencappiello/Documents/stat100b/oiLabs-base-R-2.0.0/lab.css
     highlight: pygments
     theme: cerulean
   pdf_document: default
@@ -113,7 +113,9 @@ the p-value for the test that mean(A) = mean(B) is 1.
 
 Use the following `R` code to read in a subset of the `chickwts` dataset in `R`.
 This data is for an experiment designed to measure the relative effectiveness of
-various feed supplements on chicken weights. 
+various feed supplements on chicken weights. Assume the different feeds are randomly 
+assigned to the chickens. We are removing two of the feeds, horsebean and meatmeal, 
+to simplify the problem slightly. To learn more about the full data, use `?chickwts`.
 
 ```{r eval=FALSE}
 chickwts <- chickwts[which(chickwts$feed != "horsebean" & chickwts$feed != "meatmeal"),]
@@ -123,9 +125,9 @@ chickwts <- chickwts[which(chickwts$feed != "horsebean" & chickwts$feed != "meat
 
 -   Check the ANOVA assumptions for these data.
 
--   Assume the assumptions are satisfied. Conduct the ANOVA for these data. Make
-sure to report your results with a plain language explanation in the context of 
-the study. 
+-   Assume the assumptions are satisfied. Conduct the ANOVA for these data. Include the ANOVA 
+table in your report and make sure to report your results with a plain language explanation in 
+the context of the study. 
 
 -   Run a post hoc test to determine where the differences exist. If there are no
 differences, use your post hoc test to confirm. 
